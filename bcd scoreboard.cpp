@@ -65,31 +65,32 @@ else if(s[i]=='0' && bcd[d][i]=='1')c++;
 
 void solve() {
  int n,m;ci n>>m; string s[n];
-int k[n][10]={{0}};int dig[n];
-vector<vector<int>> dp(n + 1, vector<int>(m + 1,-1));  
+int k[n][10]={{0}};
+
+vector<vector<int>> dp(n + 1, vector<int>(m + 1));  
 rep(i,0,n) ci s[i];
-rep(i,0,n) 
+
+rep(i,0,n){ 
     rep(j,0,10){
      k[i][j]=bcdtod(s[i],j);
-     if(k[i][j]>m)k[i][j]==-1;
- } 
- dp[n-1][0] = 1;
-rep(i,n-1,1) 
+     if(k[i][j]>m)k[i][j]==-1; 
+ }  }
+
+ dp[n][0] = 1;
+
+rev(i,n,1) 
     rep(j,0,m+1){
 if(dp[i][j])
 for (int d = 0; d < 10; d++) {
-          if (k[i - 1][d] != -1 && j + k[i - 1][d] <= k) {
-            dp[i - 1][j + dist[i - 1][d]] = 1;
-          }
+          if (k[i - 1][d] != -1 && j + k[i - 1][d] <= m){dp[i - 1][j + k[i - 1][d]] = 1;}
         }
+ }
 
-
-
-
-    }
-
-
-
+ 
+if (dp[0][m] == 0) {
+    cout << -1 << '\n';
+    return  ;
+  }
 
 
 
@@ -97,9 +98,9 @@ for (int d = 0; d < 10; d++) {
 for (int i = 0; i < n; i++) {
     int now = -1;
     for (int d = 9; d >= 0; d--) {
-      if (k[i][d] != -1 && dp[i + 1][m - k[i][d]]) {
+      if (k[i][d] != -1 && k[i][d]<=m && dp[i + 1][m - k[i][d]]) {
         now = d;
-        k -= k[i][d];
+        m -= k[i][d];
         break;
       }
     }
